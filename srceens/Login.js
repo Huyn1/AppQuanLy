@@ -1,16 +1,52 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
+  const navigation = useNavigation();
   const [branch, setBranch] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
 
+  // Validate form dữ liệu
+  const validateForm = () => {
+    if (!branch.trim()) {
+      Alert.alert('Lỗi', 'Vui lòng nhập chi nhánh');
+      return false;
+    }
+    if (!username.trim()) {
+      Alert.alert('Lỗi', 'Vui lòng nhập tên đăng nhập');
+      return false;
+    }
+    if (!password.trim()) {
+      Alert.alert('Lỗi', 'Vui lòng nhập mật khẩu');
+      return false;
+    }
+    return true;
+  };
+
+  const handleCashierLogin = () => {
+    if (validateForm()) {
+      // TODO: Thêm xác thực tài khoản ở đây nếu cần
+      navigation.navigate('MainApp');
+    }
+  };
+
+  const handleOrderLogin = () => {
+    if (validateForm()) {
+      // TODO: Thêm xác thực tài khoản ở đây nếu cần
+      navigation.navigate('MainApp');
+    }
+  };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
   return (
     <View style={styles.container}>
-
       <TextInput
         label="Chi nhánh"
         value={branch}
@@ -45,13 +81,13 @@ export default function LoginScreen() {
         }
       />
 
-      <TouchableOpacity onPress={() => {}} style={styles.forgotPassword}>
+      <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPassword}>
         <Text style={{ color: 'orange' }}>Quên mật khẩu?</Text>
       </TouchableOpacity>
 
       <Button
         mode="contained"
-        onPress={() => {}}
+        onPress={handleCashierLogin}
         style={styles.button}
         labelStyle={{ color: 'white', fontWeight: 'bold' }}
       >
@@ -60,7 +96,7 @@ export default function LoginScreen() {
 
       <Button
         mode="outlined"
-        onPress={() => {}}
+        onPress={handleOrderLogin}
         style={styles.buttonOutline}
         labelStyle={{ color: 'orange', fontWeight: 'bold' }}
       >
@@ -76,13 +112,6 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
     backgroundColor: '#fff',
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-    marginBottom: 20,
   },
   input: {
     marginVertical: 5,
